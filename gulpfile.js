@@ -1,17 +1,13 @@
-var gulp         = require('gulp'),
-    gutil        = require('gulp-util'),
-    es           = require('event-stream'),
-    sass         = require('gulp-sass'),
-    autoprefixer = require('gulp-autoprefixer'),
-    jshint       = require('gulp-jshint'),
-    coffee       = require('gulp-coffee'),
-    clean        = require('gulp-clean'),
-    connect      = require('gulp-connect'),
-    browserify   = require('gulp-browserify'),
-    usemin       = require('gulp-usemin'),
-    imagemin     = require('gulp-imagemin'),
-    rename       = require('gulp-rename'),
-    babel        = require('gulp-babel');
+var gulp         = require('gulp');
+var gutil        = require('gulp-util');
+var es           = require('event-stream');
+var sass         = require('gulp-sass');
+var autoprefixer = require('gulp-autoprefixer');
+var clean        = require('gulp-clean');
+var connect      = require('gulp-connect');
+var webpack      = require('gulp-webpack');
+var usemin       = require('gulp-usemin');
+var imagemin     = require('gulp-imagemin');
 
 // Connect Task
 gulp.task('connect', function () {
@@ -60,28 +56,11 @@ gulp.task('imagemin', function () {
     );
 });
 
-// CoffeeScript compiler task
-gulp.task('coffee', function () {
-    return gulp.src('src/scripts/**/*.coffee')
-        .pipe(coffee({bare: true})).on('error', gutil.log)
-        .pipe(gulp.dest('src/scripts'));
-});
-
 // Script task
-gulp.task('scripts', ['coffee'], function () {
-    return gulp.src('src/index.js')
-        // .pipe(jshint())
-        // .pipe(jshint.reporter('default'))
-        .pipe(babel({
-            presets: ['env']
-        }))
-        // .pipe(browserify({
-        //     insertGlobals: true
-        // }))
-        .pipe(rename(function (path) {
-            path.basename = 'bundle';
-        }))
-        .pipe(gulp.dest('dist-gulp/'))
+gulp.task('scripts', function () {
+    return gulp.src('src/**/*.js')
+        .pipe(webpack( require('./webpack.config.js') ))
+        .pipe(gulp.dest('dist/'))
         .pipe(connect.reload());
 });
 
@@ -95,7 +74,7 @@ gulp.task('serve', ['connect', 'sass', 'scripts', 'watch']);
 
 gulp.task('clean', function () {
     return gulp
-        .src('./dist-gulp', { read: false })
+        .src('./dist/*', { read: false })
         .pipe(clean());
 });
 
@@ -105,7 +84,7 @@ gulp.task('usemin', function () {
         .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('build', ['clean-build', 'sass', 'scripts', 'imagemin', 'usemin'], function () {
+gulp.task('build', ['clean', 'sass', 'scripts', 'imagemin', 'usemin'], function () {
 });
 
 gulp.task('default', function () {
