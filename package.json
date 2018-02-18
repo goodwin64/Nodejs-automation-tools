@@ -17,9 +17,12 @@
   "author": "goodwin64",
   "license": "MIT",
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "babelify": "^8.0.0",
     "event-stream": "^3.3.4",
     "gulp-autoprefixer": "^4.1.0",
+    "gulp-babel": "^7.0.1",
     "gulp-browserify": "^0.5.1",
     "gulp-clean": "^0.4.0",
     "gulp-coffee": "^3.0.2",

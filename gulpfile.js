@@ -10,7 +10,8 @@ var gulp         = require('gulp'),
     browserify   = require('gulp-browserify'),
     usemin       = require('gulp-usemin'),
     imagemin     = require('gulp-imagemin'),
-    rename       = require('gulp-rename');
+    rename       = require('gulp-rename'),
+    babel        = require('gulp-babel');
 
 // Connect Task
 gulp.task('connect', function () {
@@ -68,16 +69,19 @@ gulp.task('coffee', function () {
 
 // Script task
 gulp.task('scripts', ['coffee'], function () {
-    return gulp.src('src/scripts/src.js')
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'))
-        .pipe(browserify({
-            insertGlobals: true
+    return gulp.src('src/index.js')
+        // .pipe(jshint())
+        // .pipe(jshint.reporter('default'))
+        .pipe(babel({
+            presets: ['env']
         }))
+        // .pipe(browserify({
+        //     insertGlobals: true
+        // }))
         .pipe(rename(function (path) {
             path.basename = 'bundle';
         }))
-        .pipe(gulp.dest('src/scripts'))
+        .pipe(gulp.dest('dist-gulp/'))
         .pipe(connect.reload());
 });
 
@@ -90,18 +94,15 @@ gulp.task('watch', function () {
 gulp.task('serve', ['connect', 'sass', 'scripts', 'watch']);
 
 gulp.task('clean', function () {
-    gutil.log('Clean task goes here...');
+    return gulp
+        .src('./dist-gulp', { read: false })
+        .pipe(clean());
 });
 
 gulp.task('usemin', function () {
     gulp.src('./src/**/*.html')
         .pipe(usemin())
         .pipe(gulp.dest('./dist/'));
-});
-
-gulp.task('clean-build', function () {
-    return gulp.src('dist/', {read: false})
-        .pipe(clean());
 });
 
 gulp.task('build', ['clean-build', 'sass', 'scripts', 'imagemin', 'usemin'], function () {
