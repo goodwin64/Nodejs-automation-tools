@@ -1,13 +1,15 @@
-var gulp         = require('gulp');
-var gutil        = require('gulp-util');
-var es           = require('event-stream');
-var sass         = require('gulp-sass');
-var autoprefixer = require('gulp-autoprefixer');
-var clean        = require('gulp-clean');
-var connect      = require('gulp-connect');
-var webpack      = require('gulp-webpack');
-var usemin       = require('gulp-usemin');
-var imagemin     = require('gulp-imagemin');
+const gulp = require('gulp');
+const gutil = require('gulp-util');
+const es = require('event-stream');
+const sass = require('gulp-sass');
+const autoprefixer = require('gulp-autoprefixer');
+const clean = require('gulp-clean');
+const connect = require('gulp-connect');
+const webpack = require('gulp-webpack');
+const usemin = require('gulp-usemin');
+const imagemin = require('gulp-imagemin');
+
+let isDebugMode = process.env.NODE_ENV !== "production";
 
 // Connect Task
 gulp.task('connect', function () {
@@ -26,7 +28,7 @@ gulp.task('html', function () {
 
 // sass compiler task
 gulp.task('sass', function () {
-    return gulp.src('./src/styles/**/*.scss')
+    return gulp.src('./src/**/*.{scss,sass}')
         .pipe(sass({
             onError: function (error) {
                 gutil.log(gutil.colors.red(error));
@@ -34,10 +36,12 @@ gulp.task('sass', function () {
             },
             onSuccess: function () {
                 gutil.log(gutil.colors.green('Sass styles compiled successfully.'));
-            }
+            },
+            outputStyle: isDebugMode ? 'expanded' : 'compressed',
+            sourceMap: isDebugMode,
         }))
         .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
-        .pipe(gulp.dest('./src/styles/'))
+        .pipe(gulp.dest('./dist'))
         .pipe(connect.reload());
 });
 
@@ -84,8 +88,14 @@ gulp.task('usemin', function () {
         .pipe(gulp.dest('./dist/'));
 });
 
+gulp.task('enable-prod', function () {
+    isDebugMode = false;
+});
+
 gulp.task('build', ['clean', 'sass', 'scripts', 'imagemin', 'usemin'], function () {
 });
+
+gulp.task('build-prod', ['enable-prod', 'build'], function () {});
 
 gulp.task('default', function () {
     gutil.log('Default task goes here...');
