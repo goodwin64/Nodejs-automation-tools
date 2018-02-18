@@ -1,0 +1,42 @@
+{
+  "name": "nodejs-automation-tools",
+  "version": "1.0.0",
+  "description": "Project with lecture materials (FE pool 9, EPAM Systems, Kyiv, 2018)",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "automation tools",
+    "gulp",
+    "grunt",
+    "npm",
+    "yarn",
+    "webpack"
+  ],
+  "author": "goodwin64",
+  "license": "MIT",
+  "devDependencies": {
+    "babelify": "^8.0.0",
+    "event-stream": "^3.3.4",
+    "gulp-autoprefixer": "^4.1.0",
+    "gulp-browserify": "^0.5.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-coffee": "^3.0.2",
+    "gulp-connect": "^5.2.0",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-jshint": "^2.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-usemin": "^0.3.29",
+    "gulp-util": "^3.0.8",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0",
+    "watchify": "^3.10.0"
+  },
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "jshint": "^2.9.5"
+  }
+}
