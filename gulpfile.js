@@ -14,7 +14,7 @@ let isDebugMode = process.env.NODE_ENV !== "production";
 // Connect Task
 gulp.task('connect', function () {
     connect.server({
-        root: ['./src'],
+        root: ['./dist'],
         port: 1337,
         livereload: true
     });
@@ -69,9 +69,9 @@ gulp.task('scripts', function () {
 });
 
 gulp.task('watch', function () {
-    gulp.watch([ 'src/styles/**/*.scss'], ['sass']);
-    gulp.watch([ 'src/scripts' + '/**/*.js'], ['scripts']);
-    gulp.watch(['./src/**/*.html'], ['html']);
+    gulp.watch([ 'src/**/*.scss'], ['sass']);
+    gulp.watch([ 'src/**/*.js'], ['scripts']);
+    gulp.watch([ 'src/**/*.html'], ['html']);
 });
 
 gulp.task('serve', ['connect', 'sass', 'scripts', 'watch']);
@@ -82,10 +82,11 @@ gulp.task('clean', function () {
         .pipe(clean());
 });
 
-gulp.task('usemin', function () {
+gulp.task('html', function () {
     gulp.src('./src/**/*.html')
         .pipe(usemin())
-        .pipe(gulp.dest('./dist/'));
+        .pipe(gulp.dest('./dist/'))
+        .pipe(connect.reload());
 });
 
 gulp.task('enable-prod', function () {
@@ -93,7 +94,7 @@ gulp.task('enable-prod', function () {
     process.env.NODE_ENV = "production";
 });
 
-gulp.task('build', ['clean', 'sass', 'scripts', 'imagemin', 'usemin'], function () {
+gulp.task('build', ['clean', 'sass', 'scripts', 'imagemin', 'html'], function () {
 });
 
 gulp.task('build-prod', ['enable-prod', 'build'], function () {});
