@@ -90,6 +90,7 @@ gulp.task('usemin', function () {
 
 gulp.task('enable-prod', function () {
     isDebugMode = false;
+    process.env.NODE_ENV = "production";
 });
 
 gulp.task('build', ['clean', 'sass', 'scripts', 'imagemin', 'usemin'], function () {

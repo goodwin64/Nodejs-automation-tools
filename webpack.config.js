@@ -1,16 +1,17 @@
-var debug = process.env.NODE_ENV !== "production";
-var path = require('path');
+const isDebugMode = process.env.NODE_ENV !== "production";
+const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
     context: __dirname,
-    devtool: debug ? "inline-sourcemap" : false,
+    devtool: isDebugMode ? "inline-sourcemap" : false,
     // entry: "./dist/bundle.js",
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: 'bundle.js'
     },
-    plugins: debug ? [] : [
-        // new webpack.optimize.UglifyJsPlugin({ mangle: !debug, sourcemap: debug }),
+    plugins: isDebugMode ? [] : [
+        new webpack.optimize.UglifyJsPlugin({ mangle: !isDebugMode, sourcemap: isDebugMode }),
     ],
     module: {
         loaders: [
