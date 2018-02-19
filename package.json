@@ -40,5 +40,8 @@
     "watchify": "^3.10.0",
     "webpack": "^3.11.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "lodash.identity": "^3.0.0",
+    "lodash.meanby": "^4.10.0"
+  }
 }
